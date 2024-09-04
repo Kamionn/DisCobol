@@ -1,39 +1,33 @@
-import { Client, GatewayIntentBits, ActivityType } from 'discord.js';
+import { Client, GatewayIntentBits, Message } from 'discord.js';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { readFile } from 'fs/promises';
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+import path from 'path';
 
 const execPromise = promisify(exec);
 
-async function runCobolProgram() {
-    try {
-        // Exécute le programme COBOL
-        await execPromise('./hello');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-        // Lis le fichier de sortie
-        const data = await readFile('output.txt', 'utf-8');
-        console.log('Données du fichier COBOL :', data);
+async function runCobolCommand(command: string) {
+    try {
+        const commandPath = path.join(__dirname, '..', `${command}.exe`);
+        const { stdout, stderr } = await execPromise(commandPath);
+        
+        return stderr ? `Erreur : ${stderr}` : `Sortie : ${stdout}`;
     } catch (error) {
-        console.error('Erreur lors de l\'exécution du programme COBOL :', error);
+        return `Erreur lors de l'exécution de la commande : ${error}`;
     }
 }
 
+client.on('messageCreate', async (message: Message) => {
+    if (message.content.startsWith('!')) {
+        const command = message.content.slice(1).trim();
+        const response = await runCobolCommand(command);
+        message.reply(response);
+    }
+});
+
 client.once('ready', () => {
     console.log(`Connecté en tant que ${client.user?.tag}`);
-    client.user?.setPresence({
-        status: 'dnd',
-        activities: [
-            {
-                name: 'Dev en Cobol!',
-                type: ActivityType.Playing,
-            },
-        ],
-    });
-
-    // Appeler la fonction COBOL lors du démarrage du bot
-    runCobolProgram();
 });
 
 client.login('MTI4MDc5ODY4MzU4NzQxNjExNQ.GaLRy6.OW2EveHmESBAelLayFzWxOpFAoukG7vwIWp0lc');

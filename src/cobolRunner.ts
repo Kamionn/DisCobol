@@ -1,24 +1,23 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { readFile } from 'fs/promises';
 import path from 'path';
 
 const execPromise = promisify(exec);
 
-async function runCobolProgram() {
+async function runCommand(command: string) {
     try {
-        // Déterminer le chemin de l'exécutable COBOL
-        const cobolExecutable = path.join(__dirname, '..', 'hello.exe'); // Met à jour le nom de l'exécutable
-
-        // Exécute le programme COBOL
-        await execPromise(cobolExecutable);
-
-        // Lis le fichier de sortie
-        const data = await readFile('output.txt', 'utf-8');
-        console.log('Données du fichier COBOL :', data);
+        const commandPath = path.join(__dirname, '..', `${command}.exe`);
+        const { stdout, stderr } = await execPromise(commandPath);
+        
+        if (stderr) {
+            console.error(`Erreur : ${stderr}`);
+        } else {
+            console.log(`Sortie : ${stdout}`);
+        }
     } catch (error) {
-        console.error('Erreur lors de l\'exécution du programme COBOL :', error);
+        console.error(`Erreur lors de l'exécution de la commande : ${error}`);
     }
 }
 
-runCobolProgram();
+// Exemples d'exécution de commandes
+runCommand('ping');    // Remplace 'ping' par 'status' ou 'echo' selon le besoin
