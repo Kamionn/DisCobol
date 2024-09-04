@@ -11,7 +11,7 @@ const execPromise = (0, util_1.promisify)(child_process_1.exec);
 async function runCobolHandler() {
     try {
         // Déterminer le chemin de l'exécutable COBOL
-        const cobolExecutable = path_1.default.join(__dirname, '..', 'handler.exe'); // Assure-toi que le nom correspond
+        const cobolExecutable = path_1.default.join(__dirname, '..', 'handler.exe');
         // Exécuter le programme COBOL
         await execPromise(cobolExecutable);
         // Lire le fichier de sortie
