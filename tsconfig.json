@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                 // Version du JavaScript cible
+    "module": "commonjs",               // Système de module
+    "outDir": "./dist",                 // Dossier de sortie pour les fichiers compilés
+    "rootDir": "./src",                 // Dossier racine contenant les fichiers TypeScript
+    "strict": true,                     // Activer toutes les vérifications strictes
+    "esModuleInterop": true,            // Permet l'importation d'ES6 modules
+    "skipLibCheck": true                // Ignore les erreurs de vérification des types dans les fichiers de déclaration
+  },
+  "include": ["src/**/*"],              // Inclure tous les fichiers TypeScript dans le dossier src
+  "exclude": ["node_modules"]           // Exclure les fichiers dans node_modules
+}
