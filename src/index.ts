@@ -30,4 +30,4 @@ client.once('ready', () => {
     console.log(`Connecté en tant que ${client.user?.tag}`);
 });
 
-client.login('MTI4MDc5ODY4MzU4NzQxNjExNQ.GaLRy6.OW2EveHmESBAelLayFzWxOpFAoukG7vwIWp0lc');
+client.login('');
